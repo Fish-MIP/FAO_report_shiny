@@ -173,6 +173,7 @@ ui <- navbarPage(title = "Interactive Tool",
                               (SSP5-8.5). For each scenario, results shown are the mean percentage change\
                               across up to 10 ecosystem model simulations making up the FishMIP\
                               ensemble.",
+                                              
                                               br(),
                                               "This tool was developed by FishMIP researchers Denisse Fierro Arcos, Gage Clawson, Camilla Novaglio & Julia Blanchard \
                               based at the Institute for Marine & Antarctic Studies at Univeristy of Tasmania. It supports \
