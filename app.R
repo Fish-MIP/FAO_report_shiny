@@ -13,14 +13,16 @@ library(sf)
 library(rnaturalearth)
 library(ggiraph)
 
+options(shiny.silent.error = TRUE)
+
 # Loading data ------------------------------------------------------------
 base_folder <- "/rd/gem/private/users/camillan/FAO_Report/"
 
 #Loading ensemble biomass change
-maps_data <- list.files(base_folder, "ensemble_perc_bio_change_data_map.csv", 
+maps_data <- list.files(base_folder, "ensemble_perc_bio_change_data_map_tiles.csv", 
                         recursive = T, full.names = T) |> 
-  read_csv(col_select = c(x, y, starts_with("rel_change"), 
-                          NAME_EN, name_merge, figure_name))
+  read_csv() |> 
+  rowid_to_column()
 
 #Ensemble percentage change in biomass by countries
 count_bio <- list.files(base_folder, "ensemble_perc_bio_change_country.csv",
@@ -116,7 +118,7 @@ scale_fill_custom <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
 }
 
 #Define base steps for maps
-base_map <- list(geom_tile(),
+base_map <- list(geom_tile_interactive(aes(tooltip = tooltip, data_id = rowid)),
                  scale_fill_binned(limits = c(-50, 50), n.breaks = 8,
                                    type = scale_fill_custom, oob = oob_squish,
                                    name = "% change in fish biomass"),
@@ -126,7 +128,7 @@ base_map <- list(geom_tile(),
                          color = "black", show.legend = F),
                  theme_bw(),
                  guides(fill = guide_colorbar(title.position = "top", 
-                                              title.hjust = 0.5, barwidth = 30, 
+                                              title.hjust = 0.5, barwidth = 20, 
                                               barheight = 2, 
                                               ticks.linewidth = 1, 
                                               frame.linewidth = 0.5,
@@ -377,7 +379,8 @@ ui <- navbarPage(title = "Interactive Tool",
                                            choiceNames = 
                                              c("2041-2050 (medium term)",
                                                "2091-2100 (long term)"),
-                                           choiceValues = c("mean50", "mean00"),
+                                           choiceValues = c("2041-2050",
+                                                            "2091-2100"),
                                            selected = NULL
                               ),
                               p("Click the 'Download' button below to get the \
@@ -389,7 +392,7 @@ ui <- navbarPage(title = "Interactive Tool",
                               )
                             ),
                             mainPanel(
-                              fluidRow(plotOutput(outputId = "plot_maps1"))
+                              fluidRow(girafeOutput(outputId = "plot_maps1"))
                             )
                           )
                  ),
@@ -514,34 +517,39 @@ server <- function(input, output, session) {
   maps_df <- reactive({
     if(input$sectors_maps == "LME"){
       df <- maps_data |>
-        filter(name_merge == input$region_maps)
+        filter(name_merge == input$region_maps) |> 
+        select(!c(figure_name, NAME_EN)) |> 
+        rename("region_name" = "name_merge")
     }else if(input$sectors_maps == "FAO"){
       df <- maps_data |>
-        filter(NAME_EN == input$region_maps)
+        filter(NAME_EN == input$region_maps) |> 
+        select(!c(figure_name, name_merge)) |> 
+        rename("region_name" = "NAME_EN")
     }else if(input$sectors_maps == "EEZ"){
       df <- maps_data |> 
-        filter(figure_name == input$region_maps)
+        filter(figure_name == input$region_maps)|> 
+        select(c(!NAME_EN, name_merge)) |> 
+        rename("region_name" = "figure_name")
     }
     
     df <- df |> 
-      select(x, y, contains(input$region_scenario) & 
-               contains(input$region_decade)) |> 
-      rename_with(~ "change", starts_with("rel_change"))
+      filter(scenario == input$region_scenario & 
+               decade == input$region_decade)
     
     #Adjusting map proportions
-    minx <- min(df$x)
-    maxx <- max(df$x)
-    miny <- min(df$y)
-    maxy <- max(df$y)
+    minx <- min(df$longitude)
+    maxx <- max(df$longitude)
+    miny <- min(df$latitude)
+    maxy <- max(df$latitude)
     rangex <- abs(abs(maxx)-abs(minx))
     rangey <- abs(abs(maxy)-abs(miny))
     if(rangex == 0 & str_detect(input$region_maps, 
                                 "Arctic|Americas|Europe|Antarct|France", 
                                 negate = T)){
       df <- df |>
-        mutate(x = x%%360)
-      minx <- min(df$x)
-      maxx <- max(df$x)
+        mutate(longitude = longitude%%360)
+      minx <- min(df$longitude)
+      maxx <- max(df$longitude)
       rangex <- abs(abs(maxx)-abs(minx))
       base_map[[4]] <- geom_sf(inherit.aes = F, data = world_360, lwd = 0.25,
                                color = "black", show.legend = F)
@@ -572,11 +580,15 @@ server <- function(input, output, session) {
                 base_map = base_map))
   })
   
-  output$plot_maps1 <- renderPlot({
-    p1 <- ggplot(maps_df()$df, aes(x = x, y = y, fill = change))+
+  output$plot_maps1 <- renderGirafe({
+    p1 <- ggplot(maps_df()$df, aes(x = longitude, y = latitude,
+                                   fill = mean_change))+
       maps_df()$base_map+
       coord_sf(maps_df()$xlims, maps_df()$ylims)
-    p1
+    
+    return(girafe(code = print(p1)) |>
+             girafe_options(opts_zoom(max = 5),
+                            opts_toolbar(hidden = c("zoom_rect"))))
   })
   
   down_name_map <- reactive({
@@ -593,7 +605,7 @@ server <- function(input, output, session) {
       str_replace("'", "")
     region_name <- str_c("ensemble_perc_change_fish_bio_", 
                          input$region_scenario, "_", input$region_decade, "_",
-                         region_name)
+                         region_name, ".csv")
     return(region_name)
   })
   
