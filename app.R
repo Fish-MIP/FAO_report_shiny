@@ -19,8 +19,8 @@ base_folder <- "/rd/gem/private/users/camillan/FAO_Report/"
 #Loading ensemble biomass change
 maps_data <- list.files(base_folder, "ensemble_perc_bio_change_data_map.csv", 
                         recursive = T, full.names = T) |> 
-  read_csv(col_select = c(x, y, starts_with("rel_change"), NAME_EN, name_merge, 
-                          figure_name))
+  read_csv(col_select = c(x, y, starts_with("rel_change"), 
+                          NAME_EN, name_merge, figure_name))
 
 #Ensemble percentage change in biomass by countries
 count_bio <- list.files(base_folder, "ensemble_perc_bio_change_country.csv",
@@ -28,14 +28,13 @@ count_bio <- list.files(base_folder, "ensemble_perc_bio_change_country.csv",
   read_csv() |> 
   rename(name = figure_name)
 
-
 #Ensemble percentage change in biomass by FAO regions
 fao_bio <- list.files(base_folder, "ensemble_perc_bio_change_fao_region.csv",
                       recursive = T, full.names = T) |> 
   read_csv() |> 
   rename(name = NAME_EN)
 
-#Ensemble percentage change in biomass by FAO regions
+#Ensemble percentage change in biomass by LME regions
 lme_bio <- list.files(base_folder, "ensemble_perc_bio_change_lme.csv",
                       recursive = T, full.names = T) |> 
   read_csv() |> 
@@ -163,86 +162,89 @@ ui <- navbarPage(title = "Interactive Tool",
                  fluid = T,
                  tabPanel(title = "About",
                           img(src = "FishMIP_logo.png", height = 150,
-                          width = 450, style = "display: block;
+                              width = 450, style = "display: block;
                           margin-left: auto; margin-right: auto;"),
                           box(title = "About this website", status = "primary",
                               width = 18,
                               fluidRow(column(width = 11,
-                              "This tool shows estimates of fish biomass change\
-                              under two different climate scenarios: low
+                                              "This tool shows estimates of fish biomass change\
+                              under two different future climate scenarios: low
                               emissions (SSP1-2.6) and high emissions\
-                              (SSP5-8.5). Results shown are the mean percentage\
-                              across 10 ecosystem models making up the FishMIP\
+                              (SSP5-8.5). For each scenario, results shown are the mean percentage change\
+                              across up to 10 ecosystem model simulations making up the FishMIP\
                               ensemble.",
-                              br(),
-                              "This tool was developed by FishMIP and supports \
-                              the 'xxxxx' report for the FAO and published in \
+                                              br(),
+                                              "This tool was developed by FishMIP researchers Denisse Fierro Arcos, Gage Clawson, Camilla Novaglio & Julia Blanchard \
+                              based at the Institute for Marine & Antarctic Studies at Univeristy of Tasmania. It supports \
+                              the 'Climate Change Risks to Marine Ecosystems and Fisheries' report for the FAO and published in \
                               July 2024 and it can be accessed ",
-                              tags$a(href="https://fishmip.org/publications.html",
-                                     "here."),
-                              br(),
-                              br(),
-                              strong("Who is FishMIP?"),
-                              br(),
-                              "The Fisheries and Marine Ecosystem Model \
-                              Intercomparison Project (FishMIP) is a network of \
+                                              tags$a(href="https://fishmip.org/publications.html",
+                                                     "here."),
+                                              br(),
+                                              br(),
+                                              strong("Who is FishMIP?"),
+                                              br(),
+                                              "The Fisheries and Marine Ecosystem Model \
+                              Intercomparison Project (FishMIP) is an network of \
                               more than 100 marine ecosystem modellers and \
                               researchers from around the world. Our goal is to \
-                              bring together diverse marine ecosystem models to \
-                              help better understand and project the long-term \
+                              bring together our collective understanding to \
+                              help better project the long-term \
                               impacts of climate change on fisheries and marine \
                               ecosystems, and to use our findings to help inform\
                               policy.",
-                              br(),
-                              "You can find more information about FishMIP in\
+                                              br(),
+                                              "You can find more information about FishMIP on\
                               our ",
-                              tags$a(href="https://fishmip.org/",
-                                     "website."),
-                              br(),
-                              br(),
-                              strong("Who is this tool directed to?"),
-                              br(),
-                              "Our target audience is xxxx.",
-                              br(),
-                              br(),
-                              strong("How should I use this tool?"),
-                              br(),
-                              "Instructions on how to use this website.",
-                              br(),
-                              br(),
-                              strong("How should I cite data from this site?"),
-                              br(),
-                              "You can download the data used to create the\
+                                              tags$a(href="https://fishmip.org/",
+                                                     "website."),
+                                              br(),
+                                              br(),
+                                              strong("How should I use this tool?"),
+                                              br(),
+                                              "This site has three tabs that allow you to explore and download our data at different levels of detail.\
+                              The 'Global Map by Country' tab consists of country-level summaries of our projected changes in fish biomass.\
+                              Dive deeper into our data by exploring mapped changes by 'Map Changes by Marine Region',\
+                              including Country and Territory Exclusive Economic Zones, FAO Major Fishing Areas, or Large Marine Ecosystems.\
+                              Compare the two climate scenarios trajectories through time for these different marine regions \
+                              with our 'Compare Scenarios Through Time'.",
+                                              br(),
+                                              br(),
+                                              strong("How should I cite data from this site?"),
+                                              br(),
+                                              "You can download the data used to create the\
                               plots shown in this interactive tool using the\
-                              'Donwload' button included under each tab. As a\
+                              'Download' button included under each tab. As a\
                               condition of using these data, you must cite its\
                               use. Please use the following citation:",
-                              br(),
-                              "FishMIP (2024). FAO Report\
-                                              citation.",
-                              br(),
-                              "When using the data product in a publication,\
+                                              br(),
+                                              "Novaglio, C., Fierro Arcos D., Clawson, S.G., Blanchard J.L. and FishMIP (2024). Data and code used to produce maps and projections in FAO Technical Paper 707.\ " ,
+                                              br(),
+                                              br(),
+                                              "When using the data product in a publication,\
                               please include the following citation(s) in\
                               addition to the data product citation provided\
                               above:",
-                              br(),
-                              "FishMIP (2024). Some other citation.",
-                              br(),
-                              br(),
-                              strong("Acknowledgments"),
-                              br(),
-                              "The development of this tool was supported by \
+                                              br(),
+                                              "Blanchard, J.L., Novaglio, C., eds. 2024. Climate change risks to marine ecosystems and fisheries: \ 
+                              future projections from the Fisheries and Marine Ecosystems Model Intercomparison Project. \ 
+                              FAO Fisheries and Aquaculture Technical Paper No. 707. Rome, FAO. XXX pp.",
+                                              br(),
+                                              br(),
+                                              strong("Acknowledgments"),
+                                              br(),
+                                              "The development of this tool was funded by \
                               the Australian Government through the Australian \
-                              Research Council (ARC) Centre of Excellence for \
-                              XXXXX (project XXXXX).",
-                              br(),
-                              br(),
-                              card(img(src = "IMAS_logo.png", height = 150,
-                                       width = 300, style = "display: block;
+                              Research Council (ARC) Future Fellowship Project FT210100798. We gratefully acknowledge contributions from coordinators and contributing modellers of the FishMIP and ISIMIP communities.\
+                              We would also like to acknowledge the use of computing facilities provided by Digital Research Services, IT Services at the University of Tasmania. \ " ,
+                                              br(),
+                                              br(),
+                                              card(img(src = "IMAS_logo.png", height = 150,
+                                                       width = 300, style = "display: block;
                                        margin-left: auto; margin-right:auto"))
                               )))
-                          ),
-                 tabPanel(title = "Global Overview",
+                 ),
+                 tabPanel(title = "Global Map by Country",
                           img(src = "FishMIP_logo.png", height = 150,
                               width = 450, style = "display: block;
                               margin-left: auto; margin-right: auto;"),
@@ -285,14 +287,14 @@ ui <- navbarPage(title = "Interactive Tool",
                               downloadButton(outputId = "download_world",
                                              label = "Download"
                               )
-                          ),
-                          mainPanel(
-                            fluidRow(
-                              girafeOutput(outputId = "plot_world")
-                                     )
-                          )
+                            ),
+                            mainPanel(
+                              fluidRow(
+                                girafeOutput(outputId = "plot_world")
+                              )
+                            )
                           )),
-                 tabPanel(title = "Maps",
+                 tabPanel(title = "Map by Marine Region",
                           img(src = "FishMIP_logo.png", height = 150,
                               width = 450, style = "display: block;
                               margin-left: auto; margin-right: auto;"),
@@ -309,11 +311,6 @@ ui <- navbarPage(title = "Interactive Tool",
                           area of your choice from the drop down list. You can \
                           also choose the emissions scenario and decade of \
                           decade of your interest.",
-                          br(),
-                          br(),
-                          "The dotted red line in the map shows the boundaries\
-                          of territorial seas (i.e., 200 NM from the coast, \
-                          also referred to as exclusive economic zone).",
                           br(),
                           br(),
                           sidebarLayout(
@@ -360,10 +357,10 @@ ui <- navbarPage(title = "Interactive Tool",
                             ),
                             mainPanel(
                               fluidRow(plotOutput(outputId = "plot_maps1"))
-                              )
+                            )
                           )
-                          ),
-                 tabPanel(title = "Time Series",
+                 ),
+                 tabPanel(title = "Compare Scenarios Through Time",
                           img(src = "FishMIP_logo.png", height = 150,
                               width = 450, style = "display: block;
                               margin-left: auto; margin-right: auto;"),
@@ -398,15 +395,15 @@ ui <- navbarPage(title = "Interactive Tool",
                                              c("Exclusive Economic Zones (EEZs)",
                                                "FAO Major Fishing Areas",
                                                "Large Marine Ecosystems (LMEs)"
-                                               ),
+                                             ),
                                            choiceValues = c("EEZ", "FAO",
                                                             "LME"),
                                            selected = NULL
-                                           ),
+                              ),
                               selectInput(inputId = "region_ts",
                                           label = "Choose your area of interest",
                                           choices = NULL
-                                          ),
+                              ),
                               p("Click the 'Download' button below to get the \
                                 data used to create this time series plot."),
                               #Download button
@@ -415,7 +412,7 @@ ui <- navbarPage(title = "Interactive Tool",
                             ),
                             mainPanel(
                               girafeOutput(outputId = "plot_ts")
-                          ))
+                            ))
                  ))
 
 
@@ -440,30 +437,30 @@ server <- function(input, output, session) {
   
   #Plot data
   output$plot_world <- renderGirafe({
-      p1 <- ggplot()+
-        geom_sf_interactive(data = world_map_data(), 
-                            aes(fill = category, tooltip = tooltip, 
-                                data_id = iso_code), show.legend = TRUE)+
-        scale_fill_manual(values = fill_colors, breaks = levs, labels = levs, 
-                          drop = F)+
-        theme_bw()+
-        theme(panel.border = element_rect(colour = NA),
-              plot.title = element_text(hjust = 0.5),
-              legend.position = "bottom",
-              title = element_text(size = 11, face = "bold"),
-              axis.title = element_blank(),
-              legend.key.height = unit(2, "mm"),
-              legend.key.width = unit(2, "mm"))+
-        labs(fill = "% change in fish biomass")+
-        guides(fill = guide_legend(title.position = "top", title.hjust = 0.5,
-                                   title.vjust = 1, nrow = 2, label.vjust = 1,
-                                   label.position = "bottom", 
-                                   label.hjust = 0.5))
-      
-      return(girafe(code = print(p1)) |>
-               girafe_options(opts_zoom(max = 5),
-                              opts_toolbar(hidden = c("zoom_rect"))))
-    })
+    p1 <- ggplot()+
+      geom_sf_interactive(data = world_map_data(), 
+                          aes(fill = category, tooltip = tooltip, 
+                              data_id = iso_code), show.legend = TRUE)+
+      scale_fill_manual(values = fill_colors, breaks = levs, labels = levs, 
+                        drop = F)+
+      theme_bw()+
+      theme(panel.border = element_rect(colour = NA),
+            plot.title = element_text(hjust = 0.5),
+            legend.position = "bottom",
+            title = element_text(size = 11, face = "bold"),
+            axis.title = element_blank(),
+            legend.key.height = unit(2, "mm"),
+            legend.key.width = unit(2, "mm"))+
+      labs(fill = "% change in fish biomass")+
+      guides(fill = guide_legend(title.position = "top", title.hjust = 0.5,
+                                 title.vjust = 1, nrow = 2, label.vjust = 1,
+                                 label.position = "bottom", 
+                                 label.hjust = 0.5))
+    
+    return(girafe(code = print(p1)) |>
+             girafe_options(opts_zoom(max = 5),
+                            opts_toolbar(hidden = c("zoom_rect"))))
+  })
   
   ########## Maps tab ----
   region_list_maps <- reactive({
@@ -540,13 +537,13 @@ server <- function(input, output, session) {
                 xlims = xlims, 
                 ylims = ylims,
                 base_map = base_map))
-    })
+  })
   
   output$plot_maps1 <- renderPlot({
-      p1 <- ggplot(maps_df()$df, aes(x = x, y = y, fill = change))+
-        maps_df()$base_map+
-        coord_sf(maps_df()$xlims, maps_df()$ylims)
-      p1
+    p1 <- ggplot(maps_df()$df, aes(x = x, y = y, fill = change))+
+      maps_df()$base_map+
+      coord_sf(maps_df()$xlims, maps_df()$ylims)
+    p1
   })
   
   down_name_map <- reactive({
@@ -576,7 +573,7 @@ server <- function(input, output, session) {
       write_csv(maps_df()$df, file)
     }
   )
-      
+  
   ########## Time series tab ----
   region_list <- reactive({
     if(input$sectors_ts == "EEZ"){
@@ -592,7 +589,7 @@ server <- function(input, output, session) {
     return(list(df = df,
                 df_list = data))
   })
-   
+  
   observeEvent(region_list(), {
     choices <- region_list()$df_list$name
     updateSelectInput(inputId = "region_ts",
@@ -614,62 +611,61 @@ server <- function(input, output, session) {
                          region_name, "_1950-2100.csv")
     return(region_name)
   })
-
+  
   ts_df <- reactive({
     df <- region_list()$df |> 
       filter(name == input$region_ts)
     return(df)
-    })
+  })
   
   output$plot_ts <- renderGirafe({
-      p <- ggplot(data = ts_df(), aes(x = year, y = mean_change, 
-                                      colour = scenario, group = scenario))+
-        geom_point_interactive(aes(tooltip = textbox, data_id = year), 
-                               size = 0.1, hover_nearest = T)+
-        geom_line(linewidth = 0.5)+
-        #Adding no change line at 0 for reference
-        geom_hline_interactive(aes(tooltip = paste0("No difference from ",
-                                                    "reference period"), 
-                                   data_id = "Nodiff"), yintercept = 0, 
-                               color = "grey80", linewidth = 0.65,
-                   linetype = 2)+
-        #Adding line dividing historical period and future projections
-        geom_vline_interactive(aes(tooltip = 
-                                     paste0("End of historical period, ",
-                                            "start of emissions scenarios"), 
-                                   data_id = "hist_ssp"),
-                               xintercept = 2015, color = "grey80", 
-                               linewidth = 0.65)+
-        #Adding SD as shading
-        geom_ribbon(aes(ymin = mean_change-sd_change,
-                        ymax = mean_change+sd_change, fill = scenario),
-                    alpha = 0.3, color = NA)+
-        #Manually setting colours to be used in plots
-        scale_color_manual(values = c("historical" = "black",
-                                      "ssp126" = "#33bbee",
-                                      "ssp585" = "#ee3377"),
-                           name = "Scenarios",
-                           labels = c("Historical", "SSP1-2.6", "SSP5-8.5"))+
-        scale_fill_manual(values = c("historical" = "black",
-                                     "ssp126" = "#33bbee",
-                                     "ssp585" = "#ee3377"),
-                          name = "Scenarios",
-                          labels = c("Historical", "SSP1-2.6", "SSP5-8.5"))+
-        guides(color = guide_legend(nrow = 1, title.position = "left"))+
-        theme_classic()+
-        scale_x_continuous(breaks = seq(1950, 2100, 10))+
-        labs(y = "Change in exploitable fish biomass (%)")+
-        theme(legend.position = "top", legend.justification = "center",
-              legend.text = element_text(size = 10.5),
-              legend.title = element_text(size = 10.5),
-              panel.grid.minor.y = element_blank(),
-              axis.title.x = element_blank(),
-              axis.title.y = element_text(size = 10.5, hjust = 0.2),
-              axis.text.x = element_text(angle = 45, vjust = 0.765,
-                                         hjust = 0.65, size = 10),
-              axis.text.y = element_text(size = 10))
+    p <- ggplot(data = ts_df(), aes(x = year, y = mean_change, 
+                                    colour = scenario, group = scenario))+
+      geom_point_interactive(aes(tooltip = textbox, data_id = year), 
+                             size = 0.1, hover_nearest = T)+
+      geom_line(linewidth = 0.5)+
+      #Adding no change line at 0 for reference
+      geom_hline_interactive(aes(tooltip = paste0("No difference from ",
+                                                  "reference period"), 
+                                 data_id = "Nodiff"), yintercept = 0, 
+                             color = "grey80", linewidth = 0.65,
+                             linetype = 2)+
+      #Adding line dividing historical period and future projections
+      geom_vline_interactive(aes(tooltip = 
+                                   paste0("End of historical period, ",
+                                          "start of emissions scenarios"), 
+                                 data_id = "hist_ssp"),
+                             xintercept = 2015, color = "grey80", linewidth = 0.65)+
+      #Adding SD as shading
+      geom_ribbon(aes(ymin = mean_change-sd_change,
+                      ymax = mean_change+sd_change, fill = scenario),
+                  alpha = 0.3, color = NA)+
+      #Manually setting colours to be used in plots
+      scale_color_manual(values = c("historical" = "black",
+                                    "ssp126" = "#33bbee",
+                                    "ssp585" = "#ee3377"),
+                         name = "Scenarios",
+                         labels = c("Historical", "SSP1-2.6", "SSP5-8.5"))+
+      scale_fill_manual(values = c("historical" = "black",
+                                   "ssp126" = "#33bbee",
+                                   "ssp585" = "#ee3377"),
+                        name = "Scenarios",
+                        labels = c("Historical", "SSP1-2.6", "SSP5-8.5"))+
+      guides(color = guide_legend(nrow = 1, title.position = "left"))+
+      theme_classic()+
+      scale_x_continuous(breaks = seq(1950, 2100, 10))+
+      labs(y = "Change in exploitable fish biomass (%)")+
+      theme(legend.position = "top", legend.justification = "center",
+            legend.text = element_text(size = 10.5),
+            legend.title = element_text(size = 10.5),
+            panel.grid.minor.y = element_blank(),
+            axis.title.x = element_blank(),
+            axis.title.y = element_text(size = 10.5, hjust = 0.2),
+            axis.text.x = element_text(angle = 45, vjust = 0.765,
+                                       hjust = 0.65, size = 10),
+            axis.text.y = element_text(size = 10))
     
-      return(girafe(ggobj = p, height_svg = 3))
+    return(girafe(ggobj = p, height_svg = 3))
   })
   
   output$download_ts <- downloadHandler(
