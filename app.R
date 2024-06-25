@@ -43,8 +43,8 @@ lme_bio <- list.files(base_folder, "ensemble_perc_bio_change_lme.csv",
   rename(name = name_merge)
 
 #Table of summary statistics
-table_stats_admin <- list.files(base_folder, "table_stats_country_admin.csv",
-                                recursive = T, full.names = T) |> 
+table_stats_admin <- list.files(file.path(base_folder, "shiny_data"), "table_stats_country_admin.csv",
+                               full.names = T) |> 
   read_csv()
 
 #List of countries
