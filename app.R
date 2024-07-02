@@ -21,8 +21,7 @@ base_folder <- "/rd/gem/private/users/camillan/FAO_Report/"
 #Loading ensemble biomass change
 maps_data <- list.files(base_folder, "ensemble_perc_bio_change_data_map_tiles.csv", 
                         recursive = T, full.names = T) |> 
-  read_csv() |> 
-  rowid_to_column()
+  read_csv()
 
 #Ensemble percentage change in biomass by countries
 count_bio <- list.files(base_folder, "ensemble_perc_bio_change_country.csv",
@@ -105,7 +104,7 @@ scale_fill_custom <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
                               option = "D", values = NULL, space = "Lab", 
                               na.value = "white", guide = "colourbar", 
                               aesthetics = "fill") {
-  continuous_scale(aesthetics, scale_name = "custom",
+  continuous_scale(aesthetics, 
                    palette = gradient_n_pal(c(cmocean("matter", start = 0.1, 
                                                       end = 0.8, 
                                                       direction = -1)(123),
@@ -615,7 +614,9 @@ server <- function(input, output, session) {
     },
     #Creating name of download file based on original file name
     content = function(file){
-      write_csv(maps_df()$df, file)
+      df <- maps_df()$df |> 
+        select(!tooltip)
+      write_csv(df, file)
     }
   )
   
@@ -666,7 +667,7 @@ server <- function(input, output, session) {
   output$plot_ts <- renderGirafe({
     p <- ggplot(data = ts_df(), aes(x = year, y = mean_change, 
                                     colour = scenario, group = scenario))+
-      geom_point_interactive(aes(tooltip = textbox, data_id = year), 
+      geom_point_interactive(aes(tooltip = tooltip, data_id = year), 
                              size = 0.1, hover_nearest = T)+
       geom_line(linewidth = 0.5)+
       #Adding no change line at 0 for reference
@@ -720,7 +721,7 @@ server <- function(input, output, session) {
     #Creating name of download file based on original file name
     content = function(file){
       df <- ts_df() |> 
-        select(!textbox)
+        select(!tooltip)
       write_csv(df, file)
     }
   )
