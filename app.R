@@ -19,7 +19,8 @@ options(shiny.silent.error = TRUE)
 base_folder <- "/rd/gem/private/users/camillan/FAO_Report/"
 
 #Loading ensemble biomass change
-maps_data <- list.files(base_folder, "ensemble_perc_bio_change_data_map_tiles.csv", 
+maps_data <- list.files(base_folder, 
+                        "ensemble_perc_bio_change_data_map_tiles.csv", 
                         recursive = T, full.names = T) |> 
   read_csv()
 
@@ -494,7 +495,8 @@ server <- function(input, output, session) {
     
     return(girafe(code = print(p1)) |>
              girafe_options(opts_zoom(max = 5),
-                            opts_toolbar(hidden = c("zoom_rect"))))
+                            opts_toolbar(hidden = c("zoom_rect")),
+                            opts_selection(type = "none", only_shiny = T)))
   })
   
   ########## Maps tab ----
@@ -587,7 +589,8 @@ server <- function(input, output, session) {
     
     return(girafe(code = print(p1)) |>
              girafe_options(opts_zoom(max = 5),
-                            opts_toolbar(hidden = c("zoom_rect"))))
+                            opts_toolbar(hidden = c("zoom_rect")),
+                            opts_selection(type = "none", only_shiny = T)))
   })
   
   down_name_map <- reactive({
