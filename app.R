@@ -496,6 +496,8 @@ server <- function(input, output, session) {
     return(girafe(code = print(p1)) |>
              girafe_options(opts_zoom(max = 5),
                             opts_toolbar(hidden = c("zoom_rect")),
+                            opts_hover(css = "stroke: gray1;stroke-width: 1px"),
+                            opts_tooltip(opacity = .8),
                             opts_selection(type = "none", only_shiny = T)))
   })
   
@@ -714,7 +716,8 @@ server <- function(input, output, session) {
                                        hjust = 0.65, size = 10),
             axis.text.y = element_text(size = 10))
     
-    return(girafe(ggobj = p, height_svg = 3))
+    return(girafe(ggobj = p, height_svg = 3) |> 
+             girafe_options(opts_selection(type = "none", only_shiny = T)))
   })
   
   output$download_ts <- downloadHandler(
