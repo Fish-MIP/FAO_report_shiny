@@ -670,11 +670,6 @@ server <- function(input, output, session) {
   })
   
   output$plot_ts <- renderGirafe({
-    #Validate to remove error while waiting for plot to be shown
-    validate(
-      need(input$region_ts, "Processing your request, please wait.")
-    )
-    
     p <- ggplot(data = ts_df(), aes(x = year, y = mean_change, 
                                     colour = scenario, group = scenario))+
       geom_point_interactive(aes(tooltip = tooltip, data_id = year), 
