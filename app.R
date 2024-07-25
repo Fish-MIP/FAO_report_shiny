@@ -13,7 +13,7 @@ library(sf)
 library(rnaturalearth)
 library(ggiraph)
 
-options(shiny.fullstacktrace=TRUE)
+options(sass.cache = FALSE)
 
 # Loading data ------------------------------------------------------------
 base_folder <- "/rd/gem/private/users/camillan/FAO_Report/"
@@ -523,10 +523,15 @@ server <- function(input, output, session) {
     }
     
     df <- df |> 
-      filter(scenario == input$region_scenario & 
-               decade == input$region_decade)
+        filter(scenario == input$region_scenario & 
+                 decade == input$region_decade)
     
     #Adjusting map proportions
+    validate(
+      need(df$longitude != "", 
+           # display custom message in need
+           "Please wait while we render the map for your chosen area.")
+      )
     minx <- min(df$longitude)
     maxx <- max(df$longitude)
     miny <- min(df$latitude)
@@ -574,8 +579,11 @@ server <- function(input, output, session) {
     p1 <- ggplot(maps_df()$df, aes(x = longitude, y = latitude,
                                    fill = mean_change))+
       maps_df()$base_map+
-      coord_sf(maps_df()$xlims, maps_df()$ylims)
-    
+      lims(x = maps_df()$xlims, y = maps_df()$ylims)+
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.765,
+                                       hjust = 0.65, size = 9.75),
+            axis.text.y = element_text(size = 9.75))
+
     return(girafe(code = print(p1)) |>
              girafe_options(opts_zoom(max = 5),
                             opts_toolbar(hidden = c("zoom_rect")),
@@ -673,7 +681,8 @@ server <- function(input, output, session) {
                                    paste0("End of historical period, ",
                                           "start of emissions scenarios"), 
                                  data_id = "hist_ssp"),
-                             xintercept = 2015, color = "grey80", linewidth = 0.65)+
+                             xintercept = 2015, color = "grey80", 
+                             linewidth = 0.65)+
       #Adding SD as shading
       geom_ribbon(aes(ymin = mean_change-sd_change,
                       ymax = mean_change+sd_change, fill = scenario),
@@ -698,7 +707,7 @@ server <- function(input, output, session) {
             legend.title = element_text(size = 10.5),
             panel.grid.minor.y = element_blank(),
             axis.title.x = element_blank(),
-            axis.title.y = element_text(size = 10.5, hjust = 0.2),
+            axis.title.y = element_text(size = 9.75, hjust = 0.2),
             axis.text.x = element_text(angle = 45, vjust = 0.765,
                                        hjust = 0.65, size = 10),
             axis.text.y = element_text(size = 10))
