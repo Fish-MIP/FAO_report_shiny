@@ -160,129 +160,17 @@ scaler <- function(x, type, ratio = F){
 }
 
 # Defining user interface -------------------------------------------------
-ui <- navbarPage(title = "Interactive Tool",
+ui <- navbarPage(title = div(img(src = "FishMIP_logo.png",
+                                 height = 75, width = 225,
+                                 style = "display: block; margin-left: auto; 
+                                 margin-right: 15px; margin-bottom: 5px"), 
+                             "Interactive Tool"),
+                 inverse = T,
+                 theme = bs_theme(bootswatch = "lux", font_scale = 1.1),
                  fluid = T,
-                 tabPanel(title = "About",
-                          img(src = "FishMIP_logo.png", height = 150,
-                              width = 450, style = "display: block;
-                          margin-left: auto; margin-right: auto;"),
-                          box(title = "About this website", status = "primary",
-                              width = 18,
-                              fluidRow(column(width = 11,
-                              "This tool shows estimates of fish biomass change\
-                              under two different future climate scenarios: low
-                              emissions (SSP1-2.6) and high emissions\
-                              (SSP5-8.5). For each scenario, results shown are 
-                              the mean percentage change\
-                              across 10 ecosystem model simulations making up 
-                              the FishMIP ensemble.",
-                              br(),
-                              br(),        
-                              "This tool was developed by FishMIP researchers 
-                              Denisse Fierro Arcos, Gage Clawson, Camilla 
-                              Novaglio & Julia Blanchard based at the Institute 
-                              for Marine & Antarctic Studies (IMAS) at 
-                              University of Tasmania. This tool supports the 
-                              'Climate Change Risks to Marine Ecosystems and 
-                              Fisheries' report for the FAO published in \
-                              July 2024, which can be accessed ",
-                              tags$a(href="https://fishmip.org/publications.html",
-                                     "here."),
-                              br(),
-                              br(),
-                              strong("Who is FishMIP?"),
-                              br(),
-                              "The Fisheries and Marine Ecosystem Model \
-                              Intercomparison Project (FishMIP) is an network 
-                              of more than 100 marine ecosystem modellers and \
-                              researchers from around the world. Our goal is to \
-                              bring together our collective understanding to \
-                              help better project the long-term \
-                              impacts of climate change on fisheries and marine \
-                              ecosystems, and to use our findings to help inform\
-                              policy. You can find more information about 
-                              FishMIP on our ", 
-                              tags$a(href="https://fishmip.org/", "website."),
-                              br(),
-                              br(),
-                              strong("How should I use this tool?"),
-                              br(),
-                              "This site has three tabs that allow you to 
-                              visualise and download our data at different 
-                              levels of detail.",
-                              br(),
-                              "- The", strong("'Global Map by Country'"), "tab 
-                              consists of country-level summaries of projected 
-                              changes in fish biomass by the FishMIP ensemble.",
-                              br(),
-                              "- Dive deeper into our data by exploring projected 
-                              fish biomass changes under the ", 
-                              strong("'Map Changes by Marine Region'"), " tab. 
-                              Here, you can map changes for the Country and 
-                              Territory Exclusive Economic Zone, FAO Major 
-                              Fishing Area, or Large Marine Ecosystem of your 
-                              choice.",
-                              br(),
-                              "- Compare two climate scenarios trajectories (low
-                              and high emissions) through time for the marine 
-                              region of your choice in the ", 
-                              strong("'Compare Scenarios Through Time'"), " tab.",
-                              br(),
-                              br(),
-                              strong("How should I cite data from this site?"),
-                              br(),
-                              "You can download the data used to create the\
-                              plots shown in this interactive tool using the\
-                              'Download' button included under each tab. As a\
-                              condition of this tool to access data, you must 
-                              cite its use. Please use the following citations:",
-                              br(),
-                              "- Fierro-Arcos D., Novaglio, C., Clawson, S.G., &
-                              Blanchard J.L. (2024). Shiny app to explore 
-                              FishMIP climate change projections by country and
-                              marine regions.",
-                              br(),
-                              "- Novaglio, C., Fierro-Arcos D., Clawson, S.G., 
-                              Blanchard J.L. & FishMIP (2024). Data and code 
-                              used to produce maps and projections in FAO 
-                              Technical Paper 707.",
-                              br(),
-                              br(),
-                              "When using the data product in a publication,\
-                              please include the following citation in\
-                              addition to the data product citations provided\
-                              above:",
-                              br(),
-                              "Blanchard, J.L., Novaglio, C., eds. (2024). 
-                              Climate change risks to marine ecosystems and 
-                              fisheries: Future projections from the Fisheries 
-                              and Marine Ecosystems Model Intercomparison 
-                              Project. FAO Fisheries and Aquaculture Technical 
-                              Paper No. 707. Rome, FAO.",
-                              br(),
-                              br(),
-                              strong("Acknowledgments"),
-                              br(),
-                              "The development of this tool was funded by \
-                              the Australian Government through the Australian \
-                              Research Council (ARC) Future Fellowship Project 
-                              FT210100798. We gratefully acknowledge 
-                              contributions from coordinators and contributing 
-                              modellers of the FishMIP and ISIMIP communities.\
-                              We would also like to acknowledge the use of 
-                              computing facilities provided by Digital Research
-                              Services, IT Services at the University of Tasmania.",
-                              br(),
-                              br(),
-                              card(img(src = "IMAS_logo.png", height = 150,
-                                       width = 300, style = "display: block;
-                                       margin-left: auto; margin-right:auto"))
-                              )))
-                 ),
                  tabPanel(title = "Global Map by Country",
-                          img(src = "FishMIP_logo.png", height = 150,
-                              width = 450, style = "display: block;
-                              margin-left: auto; margin-right: auto;"),
+                          titlePanel("World maps of projected fish biomass 
+                                     change"),
                           "Here we present the mean estimated changes in fish \
                           biomass across the entire FishMIP ensemble \
                           (including 10 ecosystem models) in relation to our \
@@ -330,9 +218,6 @@ ui <- navbarPage(title = "Interactive Tool",
                             )
                           )),
                  tabPanel(title = "Map by Marine Region",
-                          img(src = "FishMIP_logo.png", height = 150,
-                              width = 450, style = "display: block;
-                              margin-left: auto; margin-right: auto;"),
                           titlePanel("Maps of projected fish biomass change"),
                           br(),
                           "Here we present the mean estimated changes in fish \
@@ -397,9 +282,6 @@ ui <- navbarPage(title = "Interactive Tool",
                           )
                  ),
                  tabPanel(title = "Compare Scenarios Through Time",
-                          img(src = "FishMIP_logo.png", height = 150,
-                              width = 450, style = "display: block;
-                              margin-left: auto; margin-right: auto;"),
                           titlePanel("Time series of fish biomass change"),
                           br(),
                           "Select the area of your interest to see how fish \
@@ -449,7 +331,112 @@ ui <- navbarPage(title = "Interactive Tool",
                             mainPanel(
                               girafeOutput(outputId = "plot_ts")
                             ))
-                 ))
+                 ),
+                 tabPanel(title = "About",
+                          titlePanel("About this website"),
+                          "This tool shows estimates of fish biomass change
+                          under two different future climate scenarios: low
+                          emissions (SSP1-2.6) and high emissions (SSP5-8.5). 
+                          For each scenario, results shown are the mean 
+                          percentage change across 10 ecosystem model 
+                          simulations making up the FishMIP ensemble.",
+                          br(),
+                          br(),
+                          "This tool was developed by FishMIP researchers 
+                          Denisse Fierro Arcos, Gage Clawson, Camilla Novaglio 
+                          & Julia Blanchard based at the Institute for Marine 
+                          & Antarctic Studies (IMAS) at University of Tasmania.
+                          This tool supports the 'Climate Change Risks to Marine
+                          Ecosystems and Fisheries' report for the FAO
+                          published in July 2024, which can be accessed ",
+                          tags$a(href="https://fishmip.org/publications.html",
+                                 "here."),
+                          br(),
+                          br(),
+                          h3("Who is FishMIP?"),
+                          "The Fisheries and Marine Ecosystem Model 
+                          Intercomparison Project (FishMIP) is an network of 
+                          more than 100 marine ecosystem modellers and 
+                          researchers from around the world. Our goal is to 
+                          bring together our collective understanding to help 
+                          better project the long-term impacts of climate change
+                          on fisheries and marine ecosystems, and to use our 
+                          findings to help inform policy. You can find more 
+                          information about FishMIP on our ", 
+                          tags$a(href="https://fishmip.org/", "website."),
+                          br(),
+                          br(),
+                          h3("How should I use this tool?"),
+                          "This site has three tabs that allow you to visualise
+                          and download our data at different levels of detail.",
+                          br(),
+                          "- The", strong("'Global Map by Country'"), "tab 
+                          consists of country-level summaries of projected 
+                          changes in fish biomass by the FishMIP ensemble.",
+                          br(),
+                          "- Dive deeper into our data by exploring projected 
+                          fish biomass changes under the ", 
+                          strong("'Map Changes by Marine Region'"), " tab. Here,
+                          you can map changes for the Country and Territory 
+                          Exclusive Economic Zone, FAO Major Fishing Area, or 
+                          Large Marine Ecosystem of your choice.",
+                          br(),
+                          "- Compare two climate scenarios trajectories (low 
+                          and high emissions) through time for the marine 
+                          region of your choice in the ", 
+                          strong("'Compare Scenarios Through Time'"), " tab.",
+                          br(),
+                          br(),
+                          h3("How should I cite data from this site?"),
+                          "You can download the data used to create the plots
+                          shown in this interactive tool using the 'Download' 
+                          button included under each tab. As a condition of 
+                          this tool to access data, you must cite its use. 
+                          Please use the following citations:",
+                          br(),
+                          "- Fierro-Arcos D., Novaglio, C., Clawson, S.G., &
+                          Blanchard J.L. (2024). Shiny app to explore FishMIP 
+                          climate change projections by country and marine 
+                          regions.",
+                          br(),
+                          "- Novaglio, C., Fierro-Arcos D., Clawson, S.G., 
+                          Blanchard J.L. & FishMIP (2024). Data and code used 
+                          to produce maps and projections in FAO Technical 
+                          Paper 707.",
+                          br(),
+                          br(),
+                          "When using the data product in a publication, please 
+                          include the following citation in addition to the 
+                          data product citations provided above:",
+                          br(),
+                          "Blanchard, J.L., Novaglio, C., eds. (2024). Climate 
+                          change risks to marine ecosystems and fisheries: 
+                          Future projections from the Fisheries and Marine 
+                          Ecosystems Model Intercomparison Project. FAO 
+                          Fisheries and Aquaculture Technical Paper No. 707. 
+                          Rome, FAO.",
+                          br(),
+                          br(),
+                          h3("Acknowledgments"),
+                          "The development of this tool was funded by the 
+                          Australian Government through the Australian Research 
+                          Council (ARC) Future Fellowship Project FT210100798. 
+                          We gratefully acknowledge contributions from 
+                          coordinators and contributing modellers of the FishMIP
+                          and ISIMIP communities. We would also like to 
+                          acknowledge the use of computing facilities provided
+                          by Digital Research Services, IT Services at the 
+                          University of Tasmania.",
+                          br(),
+                          br(),
+                          card(img(src = "IMAS_logo.png", height = 150,
+                          width = 300, style = "display: block; 
+                          margin-left: auto; margin-right:auto"),
+                          img(src = "FishMIP_logo.png", height = 150,
+                          width = 450, style = "display: block;
+                          margin-left: auto; margin-right: auto;"))
+                 )
+                 )
 
 
 server <- function(input, output, session) {
