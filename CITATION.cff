@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Fierro-Arcos"
+  given-names: "Denisse"
+  orcid: "https://orcid.org/0000-0002-5039-6272"
+- family-names: "Novaglio"
+  given-names: "Camilla"
+- family-names: "Clawson"
+  given-names: "S. Gage"
+- family-names: "Blanchard"
+  given-names: "Julia L."
+- name: "Fisheries and Marine Ecosystem Model Intercomparison Project (Fish-MIP)"
+
+title: "Shiny app to explore FishMIP climate change projections by country and marine regions"
+version: 1.0.0
+doi: TBA
+date-released: TBA
+url: "https://github.com/Fish-MIP/FAO_report_shiny"
+license: CC BY-SA 4.0
