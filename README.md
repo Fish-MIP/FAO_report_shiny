@@ -1,1 +1,13 @@
 # FishMIP Interactive Tool
+This repository contains the code developed to create a shiny app called the [FishMIP Interactive Tool](https://rstudio.global-ecosystem-model.cloud.edu.au/shiny/FAO_report_shiny/). This tool shows estimates of fish biomass change under two different future climate scenarios: low emissions (SSP1-2.6) and high emissions (SSP5-8.5). For each scenario, results shown are the mean percentage change across 10 ecosystem model simulations making up the FishMIP ensemble.  
+  
+The FishMIP Interactive Tool was developed by FishMIP researchers Denisse Fierro Arcos, Gage Clawson, Camilla Novaglio & Julia Blanchard based at the Institute for Marine & Antarctic Studies (IMAS) at University of Tasmania. This tool supports the *"Climate Change Risks to Marine Ecosystems and Fisheries"* [[1]](#1) report for the FAO published in July 2024, which can be accessed [here](https://openknowledge.fao.org/items/ae42f17d-4685-4c7e-8e3d-424cea16c8d4).  
+
+This repository is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), which allows you to distribute, remix, adapt and build upon our work but you must cite its use. Please use the following citation:  
+- Fierro-Arcos D., Novaglio, C., Clawson, S.G., & Blanchard J.L. (2024). Shiny app to explore FishMIP climate change projections by country and marine regions.  
+  
+## References
+<a id="1">[1]</a> 
+Blanchard, J.L., Novaglio, C., eds. (2024). Climate change risks to marine ecosystems and fisheries: Future projections from the Fisheries and Marine Ecosystems Model Intercomparison Project. FAO Fisheries and Aquaculture Technical Paper No. 707. Rome, FAO. Available online through the [FAO Knowledge Repository](https://openknowledge.fao.org/items/ae42f17d-4685-4c7e-8e3d-424cea16c8d4).  
+
+<p xmlns:cc="http://creativecommons.org/ns#" >This work is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>

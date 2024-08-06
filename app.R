@@ -135,15 +135,15 @@ base_map <- list(geom_tile_interactive(aes(tooltip = tooltip, data_id = rowid)),
                                               ticks.colour = "#444444",
                                               frame.colour = "#444444",
                                               title.theme = element_text(
-                                                face = "plain",size = 14),
+                                                face = "plain", size = 13),
                                               label.theme = element_text(
-                                                size = 14))),
+                                                size = 13))),
                  theme(axis.title = element_blank(), 
                        panel.border = element_rect(colour = NA),
                        plot.title = element_text(hjust = 0.5),
                        legend.position = "bottom", 
-                       title = element_text(size = 14, face = "bold"),
-                       axis.text = element_text(size = 12)))
+                       title = element_text(size = 13, face = "bold"),
+                       axis.text = element_text(size = 11)))
 
 #Function to improve map ratios for plotting
 scaler <- function(x, type, ratio = F){
@@ -480,10 +480,10 @@ server <- function(input, output, session) {
       theme(panel.border = element_rect(colour = NA),
             plot.title = element_text(hjust = 0.5),
             legend.position = "bottom",
-            title = element_text(size = 11, face = "bold"),
+            title = element_text(size = 10, face = "bold"),
             axis.title = element_blank(),
-            legend.key.height = unit(2, "mm"),
-            legend.key.width = unit(2, "mm"))+
+            legend.key.height = unit(1, "mm"),
+            legend.key.width = unit(1, "mm"))+
       labs(fill = "% change in fish biomass")+
       guides(fill = guide_legend(title.position = "top", title.hjust = 0.5,
                                  title.vjust = 1, nrow = 2, label.vjust = 1,
@@ -590,8 +590,8 @@ server <- function(input, output, session) {
       maps_df()$base_map+
       lims(x = maps_df()$xlims, y = maps_df()$ylims)+
       theme(axis.text.x = element_text(angle = 45, vjust = 0.765,
-                                       hjust = 0.65, size = 9.75),
-            axis.text.y = element_text(size = 9.75))
+                                       hjust = 0.65, size = 8.75),
+            axis.text.y = element_text(size = 8.75))
 
     return(girafe(code = print(p1)) |>
              girafe_options(opts_zoom(max = 5),
