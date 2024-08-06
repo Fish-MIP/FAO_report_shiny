@@ -160,7 +160,7 @@ scaler <- function(x, type, ratio = F){
 }
 
 # Defining user interface -------------------------------------------------
-ui <- navbarPage(title = div(img(src = "FishMIP_logo.png",
+ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                                  height = 75, width = 225,
                                  style = "display: block; margin-left: auto; 
                                  margin-right: 15px; margin-bottom: 5px"), 
@@ -429,12 +429,22 @@ ui <- navbarPage(title = div(img(src = "FishMIP_logo.png",
                           University of Tasmania.",
                           br(),
                           br(),
-                          card(img(src = "IMAS_logo.png", height = 150,
-                          width = 300, style = "display: block; 
-                          margin-left: auto; margin-right:auto"),
-                          img(src = "FishMIP_logo.png", height = 150,
-                          width = 450, style = "display: block;
-                          margin-left: auto; margin-right: auto;"))
+                          fluidRow(
+                            column(4, img(src = "IMAS_logo.png", height = 150,
+                                          width = 300, style = "display: block; 
+                                          margin-left: auto;
+                                          margin-right: auto")),
+                            column(4, img(src = "FishMIP_logo.png", 
+                                          height = 150, width = 450, 
+                                          style = "display: block;
+                                          margin-left: auto; 
+                                          margin-right: auto")),
+                            column(4, img(src = "UN_OceanDecadeLogo_cropped.png", 
+                                          height = 150, width = 300, 
+                                          style = "display: block; 
+                                          margin-left: auto; margin-bottom: 5px;
+                                          margin-right: auto"))),
+                          br()
                  )
                  )
 
@@ -529,7 +539,7 @@ server <- function(input, output, session) {
     #Adjusting map proportions
     validate(
       need(df$longitude != "", 
-           # display custom message in need
+           # display custom message 
            "Please wait while we render the map for your chosen area.")
       )
     minx <- min(df$longitude)
@@ -539,8 +549,7 @@ server <- function(input, output, session) {
     rangex <- abs(abs(maxx)-abs(minx))
     rangey <- abs(abs(maxy)-abs(miny))
     if(rangex == 0 & str_detect(input$region_maps, 
-                                "Arctic|Americas|Europe|Antarct|France", 
-                                negate = T)){
+                                "Americas|Europe|Antarct|France", negate = T)){
       df <- df |>
         mutate(longitude = longitude%%360)
       minx <- min(df$longitude)
