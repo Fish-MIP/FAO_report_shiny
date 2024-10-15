@@ -417,6 +417,14 @@ ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                           Rome, FAO.",
                           br(),
                           br(),
+                          h3("How can I contact you?"),
+                          "If you have any ideas on how to improve this app or
+                          if you found any issues, you can ",
+                          tags$a(href = "https://github.com/Fish-MIP/FAO_report_shiny/issues",
+                                 "create an issue"),
+                          " in our GitHub repository.",
+                          br(),
+                          br(),
                           h3("Acknowledgments"),
                           "The development of this tool was funded by the 
                           Australian Government through the Australian Research 
