@@ -172,11 +172,10 @@ ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                           titlePanel("World maps of projected fish biomass 
                                      change"),
                           "Here we present the mean estimated changes in fish \
-                          biomass across the entire FishMIP ensemble \
-                          (including 10 ecosystem models) in relation to our \
-                          reference period (mean between 2005-2014) within the\
-                          boundaries of a country's exclusive economic zone\
-                          (EEZ).",
+                          biomass across the entire FishMIP ensemble in \
+                          relation to our reference period (mean between \
+                          2005-2014) within the boundaries of a country's \
+                          exclusive economic zone (EEZ).",
                           br(),
                           "Choose the scenario and decade of your interest for\
                           the interactive map to appear on your screen. Allow\
@@ -222,8 +221,8 @@ ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                           br(),
                           "Here we present the mean estimated changes in fish \
                           biomass across the entire FishMIP ensemble \
-                          (including 10 ecosystem models) in relation to our \
-                          reference period (mean between 2005-2014).",
+                          in relation to our reference period (mean between \
+                          2005-2014).",
                           br(),
                           br(),
                           "To see changes in the area of your interest, click \
@@ -293,7 +292,7 @@ ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                           percentage change for FishMIP model ensemble in \
                           relation to the historical reference period (mean for \
                           the decade between 2005 and 2014). The shaded areas \
-                          show the standard deviation across the 10 ecosystem \
+                          show the standard deviation across the ecosystem \
                           models that form the FishMIP ensemble.",
                           br(),
                           br(),
@@ -338,7 +337,7 @@ ui <- navbarPage(title = div(img(src = "FishMIP_white_no-bg_logo.png",
                           under two different future climate scenarios: low
                           emissions (SSP1-2.6) and high emissions (SSP5-8.5). 
                           For each scenario, results shown are the mean 
-                          percentage change across 10 ecosystem model 
+                          percentage change across the ecosystem model 
                           simulations making up the FishMIP ensemble.",
                           br(),
                           br(),
@@ -499,7 +498,7 @@ server <- function(input, output, session) {
                                  label.hjust = 0.5))
     
     return(girafe(code = print(p1)) |>
-             girafe_options(opts_zoom(max = 5),
+             girafe_options(opts_zoom(min = 0.5, max = 2),
                             opts_toolbar(hidden = c("zoom_rect")),
                             opts_hover(css = "stroke: gray1;stroke-width: 1px"),
                             opts_tooltip(opacity = .8),
@@ -602,7 +601,7 @@ server <- function(input, output, session) {
             axis.text.y = element_text(size = 8.75))
 
     return(girafe(code = print(p1)) |>
-             girafe_options(opts_zoom(max = 5),
+             girafe_options(opts_zoom(min = 0.5, max = 2),
                             opts_toolbar(hidden = c("zoom_rect")),
                             opts_selection(type = "none", only_shiny = T)))
   })
